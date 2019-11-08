@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
       console.log(resCustomer);
     });
 
-
     this.store.dispatch(new fromStore.LoadCustomer());
   }
 
