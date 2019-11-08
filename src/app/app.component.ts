@@ -15,16 +15,18 @@ export class AppComponent implements OnInit {
   customers: Customer[];
   constructor(
     private store: Store<fromStore.AppState>,
-    private customerService: CustomerService) { }
+    private customerService: CustomerService) {
+  }
 
   ngOnInit() {
-    /* this.store.select('customers').subscribe(resCustomer => {
-      this.customers = resCustomer.data;
-    }); */
+    this.store.select(fromStore.getCustomers).subscribe(resCustomer => this.customers = resCustomer);
 
-    this.customerService.getCustomers()
-      .subscribe(resCustomer => this.customers = resCustomer);
+    this.store.select(fromStore.getCustomerById(3)).subscribe(resCustomer => {
+      console.log(resCustomer);
+    });
 
+
+    this.store.dispatch(new fromStore.LoadCustomer());
   }
 
   deleteClient(id) {
