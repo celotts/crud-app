@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from './store';
+import { Customer } from './models/customer.model';
+import { CustomerService } from './services/customer.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +11,27 @@ import * as fromStore from './store';
 })
 
 export class AppComponent implements OnInit {
-  title = 'crud-app';
 
-  constructor(private store: Store<fromStore.AppState>) { }
+  customers: Customer[];
+  constructor(
+    private store: Store<fromStore.AppState>,
+    private customerService: CustomerService) { }
 
   ngOnInit() {
-    this.store.select('customers').subscribe(resCustomer => {
-      console.log(resCustomer);
-    });
+    /* this.store.select('customers').subscribe(resCustomer => {
+      this.customers = resCustomer.data;
+    }); */
+
+    this.customerService.getCustomers()
+      .subscribe(resCustomer => this.customers = resCustomer);
+
+  }
+
+  deleteClient(id) {
+
+  }
+
+  editClient(customer) {
+
   }
 }
