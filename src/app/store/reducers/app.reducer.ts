@@ -1,5 +1,7 @@
 import * as fromCustomerActions from '../actions/customer.action';
 import { Customer } from '../../models/customer.model';
+import { logging } from 'protractor';
+import { UPDATE_CUSTOMER_FAIL } from '../actions/customer.action';
 
 export interface CustomerState {
   data: Customer[];
@@ -40,6 +42,30 @@ export function reducer(state = initialState, action: fromCustomerActions.Custom
         ...state,
         loading: false,
         loaded: false,
+        error: action.payload
+      };
+    }
+
+    case fromCustomerActions.UPDATE_CUSTOMER_SUCCESS: {
+      const data = state.data.map(customer => {
+        if (customer.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return customer;
+        }
+      });
+
+      return {
+        ...state,
+        data,
+        loaded: true,
+        loading: false
+      };
+    }
+
+    case fromCustomerActions.UPDATE_CUSTOMER_FAIL: {
+      return {
+        ...state,
         error: action.payload
       };
     }
